@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
+import Image from 'next/image'
 import { navLinks } from '@/lib/data'
 import { cn } from '@/lib/utils'
 
@@ -38,25 +39,39 @@ export function Header() {
         <div className="container-custom px-4 md:px-8">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2">
-              <span
+              <Link
+                href="/"
                 className={cn(
-                  'font-serif text-2xl md:text-3xl font-semibold tracking-wide',
-                  isScrolled ? 'text-primary' : 'text-white'
+                  'flex flex-col items-center rounded-xl transition-colors duration-300',
+                  isScrolled ? 'bg-transparent' : 'bg-white/10 backdrop-blur-sm px-3 py-1.5'
                 )}
               >
-                XULASHO
-              </span>
-            </Link>
+                <Image
+                  src="/images/biglogo.png"
+                  alt="XULASHO"
+                  width={200}
+                  height={64}
+                  className="h-10 md:h-14 w-auto object-contain"
+                  priority
+                />
+                <span
+                  className={cn(
+                    'font-serif text-xs md:text-sm font-semibold tracking-wider leading-tight',
+                    isScrolled ? 'text-primary' : 'text-white'
+                  )}
+                >
+                  XULASHO
+                </span>
+              </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-8">
+            <nav className="hidden lg:flex items-center gap-4 xl:gap-6">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    'font-body text-sm font-medium tracking-wide uppercase transition-colors duration-300 relative group',
+                    'font-body text-xs xl:text-sm font-medium tracking-wide uppercase transition-colors duration-300 relative group',
                     isScrolled
                       ? 'text-primary hover:text-gold'
                       : 'text-white/90 hover:text-white',

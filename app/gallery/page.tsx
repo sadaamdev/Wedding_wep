@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { galleryItems } from '@/lib/data'
 
-const categories = ['All', 'Decoration', 'Halls', 'Photography', 'Henna', 'Cakes', 'Entertainment']
+const categories = ['All', 'Wedding', 'Birthday', 'Graduation', 'Opening', 'Events']
 
 export default function GalleryPage() {
   const [activeCategory, setActiveCategory] = useState('All')
@@ -41,7 +41,7 @@ export default function GalleryPage() {
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
           style={{
-            backgroundImage: `url('https://images.pexels.com/photos/1024960/pexels-photo-1024960.jpeg?w=1920&h=600&fit=crop')`,
+            backgroundImage: `url('/images/g4.png')`,
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-primary/60 to-primary" />

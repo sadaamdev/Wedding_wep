@@ -47,18 +47,6 @@
     @apply bg-white/10 backdrop-blur-md border border-white/20;
   }
 
-  .glass-dark {
-    @apply bg-primary/80 backdrop-blur-md border border-white/10;
-  }
-
-  .btn-primary {
-    @apply inline-flex items-center justify-center px-8 py-4
-           bg-primary text-white font-body font-medium
-           rounded-full transition-all duration-400 ease-luxury
-           hover:bg-primary-600 hover:shadow-elegant hover:-translate-y-0.5
-           active:translate-y-0 active:shadow-card;
-  }
-
   .btn-secondary {
     @apply inline-flex items-center justify-center px-8 py-4
            bg-white/10 backdrop-blur-sm border border-white/30
@@ -83,12 +71,8 @@
            hover:text-gold hover:bg-gold/10 rounded-full;
   }
 
-  .section-padding {
-    @apply py-20 md:py-30 lg:py-40 px-4 md:px-8 lg:px-16;
-  }
-
   .container-custom {
-    @apply max-w-7xl mx-auto;
+    @apply max-w-7xl mx-auto px-4 md:px-6 lg:px-8;
   }
 
   .text-gradient {
@@ -111,83 +95,13 @@
            focus:outline-none focus:border-gold focus:ring-2 focus:ring-gold/20;
   }
 
-  .link-underline {
-    @apply relative after:absolute after:bottom-0 after:left-0
-           after:w-0 after:h-0.5 after:bg-gold after:transition-all
-           after:duration-300 hover:after:w-full;
+  .section-padding {
+    @apply py-16 md:py-24;
   }
 }
 
 @layer utilities {
-  .animation-delay-100 {
-    animation-delay: 100ms;
-  }
-  .animation-delay-200 {
-    animation-delay: 200ms;
-  }
-  .animation-delay-300 {
-    animation-delay: 300ms;
-  }
-  .animation-delay-400 {
-    animation-delay: 400ms;
-  }
-  .animation-delay-500 {
-    animation-delay: 500ms;
-  }
-  .animation-delay-600 {
-    animation-delay: 600ms;
-  }
-  .animation-delay-700 {
-    animation-delay: 700ms;
-  }
-  .animation-delay-800 {
-    animation-delay: 800ms;
-  }
-
   .text-balance {
     text-wrap: balance;
   }
-
-  .hide-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  .hide-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
-  .mask-gradient-b {
-    mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-  }
-}
-
-/* Custom scrollbar for webkit browsers */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f5f0e8;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #d5bf8f;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #c9a227;
-}
-
-/* Selection */
-::selection {
-  background: #e8d5b0;
-  color: #1a1a1a;
-}
-
-/* Focus visible */
-:focus-visible {
-  outline: 2px solid #c9a227;
-  outline-offset: 2px;
 }

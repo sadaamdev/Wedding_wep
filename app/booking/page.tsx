@@ -14,15 +14,27 @@ import {
   Heart,
   MessageCircle,
   Check,
+  Sparkles,
+  Cake,
+  GraduationCap,
+  Building2,
 } from 'lucide-react'
-import { packages } from '@/lib/data'
+import { packages, openingPackages, graduationPackages, birthdayPackages } from '@/lib/data'
 import { cn, formatPrice } from '@/lib/utils'
+
+const eventTypes = [
+  { id: 'wedding', title: 'Wedding', icon: Heart, packages: packages },
+  { id: 'opening', title: 'Opening Ceremony', icon: Building2, packages: openingPackages },
+  { id: 'graduation', title: 'Graduation', icon: GraduationCap, packages: graduationPackages },
+  { id: 'birthday', title: 'Birthday', icon: Cake, packages: birthdayPackages },
+]
 
 const bookingSchema = z.object({
   name: z.string().min(2, 'Name is required'),
   email: z.string().email('Invalid email address'),
   phone: z.string().min(10, 'Phone number is required'),
-  weddingDate: z.string().min(1, 'Wedding date is required'),
+  eventType: z.string().min(1, 'Please select an event type'),
+  weddingDate: z.string().min(1, 'Event date is required'),
   guestCount: z.string().min(1, 'Guest count is required'),
   package: z.string().min(1, 'Please select a package'),
   additionalRequests: z.string().optional(),
@@ -33,9 +45,10 @@ type BookingFormData = z.infer<typeof bookingSchema>
 
 const steps = [
   { id: 1, title: 'Personal Info', icon: Heart },
-  { id: 2, title: 'Event Details', icon: Calendar },
-  { id: 3, title: 'Select Package', icon: Users },
-  { id: 4, title: 'Confirmation', icon: Check },
+  { id: 2, title: 'Event Type', icon: Sparkles },
+  { id: 3, title: 'Event Details', icon: Calendar },
+  { id: 4, title: 'Select Package', icon: Users },
+  { id: 5, title: 'Confirmation', icon: Check },
 ]
 
 export default function BookingPage() {
@@ -55,19 +68,36 @@ export default function BookingPage() {
     },
   })
 
+  const selectedEventType = watch('eventType')
   const selectedPackage = watch('package')
 
+  const currentEventPackages = eventTypes.find(e => e.id === selectedEventType)?.packages || []
+
   const nextStep = () => {
-    if (currentStep < 4) setCurrentStep(currentStep + 1)
+    if (currentStep < 5) setCurrentStep(currentStep + 1)
   }
 
   const prevStep = () => {
     if (currentStep > 1) setCurrentStep(currentStep - 1)
   }
 
-  const onSubmit = (data: BookingFormData) => {
-    console.log('Booking submitted:', data)
-    setIsSubmitted(true)
+  const onSubmit = async (data: BookingFormData) => {
+    try {
+      const response = await fetch('/api/booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to submit booking')
+      }
+
+      setIsSubmitted(true)
+    } catch (error) {
+      console.error('Booking form error:', error)
+      alert('Failed to submit booking. Please try again or contact us directly.')
+    }
   }
 
   if (isSubmitted) {
@@ -130,7 +160,7 @@ export default function BookingPage() {
               Book Now
             </span>
             <h1 className="font-serif text-h1-mobile lg:text-h1 text-white mb-6">
-              Start Your Wedding Journey
+              Start Your Event Journey
             </h1>
             <p className="font-body text-lg text-white/70 max-w-2xl mx-auto">
               Fill out the form below to book your free consultation. We&apos;ll help you
@@ -158,7 +188,7 @@ export default function BookingPage() {
                   )}
                 >
                   <step.icon size={16} />
-                  <span className="hidden md:block font-body text-sm font-medium">
+                  <span className="font-body text-xs md:text-sm font-medium truncate max-w-[60px] md:max-w-none">
                     {step.title}
                   </span>
                 </button>
@@ -254,10 +284,53 @@ export default function BookingPage() {
                   </motion.div>
                 )}
 
-                {/* Step 2: Event Details */}
+                {/* Step 2: Event Type */}
                 {currentStep === 2 && (
                   <motion.div
                     key="step2"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    className="space-y-6"
+                  >
+                    <h2 className="font-serif text-h3 text-primary mb-6">
+                      Select Event Type
+                    </h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {eventTypes.map((event) => {
+                        const Icon = event.icon
+                        return (
+                          <button
+                            key={event.id}
+                            type="button"
+                            onClick={() => setValue('eventType', event.id)}
+                            className={cn(
+                              'p-6 rounded-xl text-left transition-all duration-300 border-2 flex items-center gap-4',
+                              selectedEventType === event.id
+                                ? 'border-gold bg-gold/5'
+                                : 'border-border hover:border-gold/50'
+                            )}
+                          >
+                            <div className="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0">
+                              <Icon className="w-6 h-6 text-gold" />
+                            </div>
+                            <span className="font-serif text-lg text-primary">
+                              {event.title}
+                            </span>
+                          </button>
+                        )
+                      })}
+                    </div>
+                    {errors.eventType && (
+                      <p className="text-red-500 text-sm">{errors.eventType.message}</p>
+                    )}
+                  </motion.div>
+                )}
+
+                {/* Step 3: Event Details */}
+                {currentStep === 3 && (
+                  <motion.div
+                    key="step3"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
@@ -268,7 +341,7 @@ export default function BookingPage() {
                     </h2>
                     <div>
                       <label className="block font-body text-sm font-medium text-primary mb-2">
-                        Wedding Date *
+                        Event Date *
                       </label>
                       <input
                         {...register('weddingDate')}
@@ -310,16 +383,16 @@ export default function BookingPage() {
                         {...register('additionalRequests')}
                         rows={4}
                         className="input-luxury resize-none"
-                        placeholder="Tell us about your dream wedding..."
+                        placeholder="Tell us about your dream event..."
                       />
                     </div>
                   </motion.div>
                 )}
 
-                {/* Step 3: Package Selection */}
-                {currentStep === 3 && (
+                {/* Step 4: Package Selection */}
+                {currentStep === 4 && (
                   <motion.div
-                    key="step3"
+                    key="step4"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
@@ -328,45 +401,53 @@ export default function BookingPage() {
                     <h2 className="font-serif text-h3 text-primary mb-6">
                       Select Your Package
                     </h2>
-                    <div className="space-y-4">
-                      {packages.map((pkg) => (
-                        <button
-                          key={pkg.id}
-                          type="button"
-                          onClick={() => setValue('package', pkg.id)}
-                          className={cn(
-                            'w-full p-6 rounded-xl text-left transition-all duration-300 border-2',
-                            selectedPackage === pkg.id
-                              ? 'border-gold bg-gold/5'
-                              : 'border-border hover:border-gold/50'
-                          )}
-                        >
-                          <div className="flex items-start justify-between">
-                            <div>
-                              <h3 className="font-serif text-lg text-primary mb-1">
-                                {pkg.name}
-                              </h3>
-                              <p className="font-body text-sm text-muted">
-                                {pkg.description}
-                              </p>
+                    {!selectedEventType ? (
+                      <div className="text-center p-8 bg-sand rounded-xl">
+                        <p className="font-body text-muted">
+                          Please go back and select an event type first.
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        {currentEventPackages.map((pkg) => (
+                          <button
+                            key={pkg.id}
+                            type="button"
+                            onClick={() => setValue('package', pkg.id)}
+                            className={cn(
+                              'w-full p-6 rounded-xl text-left transition-all duration-300 border-2',
+                              selectedPackage === pkg.id
+                                ? 'border-gold bg-gold/5'
+                                : 'border-border hover:border-gold/50'
+                            )}
+                          >
+                            <div className="flex items-start justify-between">
+                              <div>
+                                <h3 className="font-serif text-lg text-primary mb-1">
+                                  {pkg.name}
+                                </h3>
+                                <p className="font-body text-sm text-muted">
+                                  {pkg.description}
+                                </p>
+                              </div>
+                              <div className="text-right">
+                                <p className="font-serif text-2xl text-primary font-semibold">
+                                  {pkg.price > 0 ? formatPrice(pkg.price) : 'Custom'}
+                                </p>
+                              </div>
                             </div>
-                            <div className="text-right">
-                              <p className="font-serif text-2xl text-primary font-semibold">
-                                {formatPrice(pkg.price)}
-                              </p>
-                            </div>
-                          </div>
-                        </button>
-                      ))}
-                    </div>
+                          </button>
+                        ))}
+                      </div>
+                    )}
                     {errors.package && (
                       <p className="text-red-500 text-sm">{errors.package.message}</p>
                     )}
                   </motion.div>
                 )}
 
-                {/* Step 4: Confirmation */}
-                {currentStep === 4 && (
+                {/* Step 5: Confirmation */}
+                {currentStep === 5 && (
                   <motion.div
                     key="step4"
                     initial={{ opacity: 0, x: 20 }}
@@ -395,7 +476,13 @@ export default function BookingPage() {
                           <span className="text-primary">{watch('phone')}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-muted">Wedding Date:</span>
+                          <span className="text-muted">Event Type:</span>
+                          <span className="text-primary capitalize">
+                            {eventTypes.find(e => e.id === watch('eventType'))?.title}
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-muted">Event Date:</span>
                           <span className="text-primary">{watch('weddingDate')}</span>
                         </div>
                         <div className="flex justify-between">
@@ -405,7 +492,7 @@ export default function BookingPage() {
                         <div className="flex justify-between">
                           <span className="text-muted">Package:</span>
                           <span className="text-primary capitalize">
-                            {packages.find(p => p.id === watch('package'))?.name}
+                            {currentEventPackages.find(p => p.id === watch('package'))?.name}
                           </span>
                         </div>
                       </div>
@@ -434,7 +521,7 @@ export default function BookingPage() {
                   </Link>
                 )}
 
-                {currentStep < 4 ? (
+                {currentStep < 5 ? (
                   <button
                     type="button"
                     onClick={nextStep}

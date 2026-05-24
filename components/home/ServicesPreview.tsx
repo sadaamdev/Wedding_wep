@@ -15,7 +15,8 @@ import {
   Cake,
   ClipboardCheck,
   Frame,
-  Heart
+  Heart,
+  GraduationCap
 } from 'lucide-react'
 import { services } from '@/lib/data'
 import { cn } from '@/lib/utils'
@@ -33,6 +34,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   ClipboardCheck,
   Frame,
   Heart,
+  GraduationCap,
 }
 
 const containerVariants = {
@@ -90,30 +92,31 @@ export function ServicesPreview() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: '-100px' }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
         >
           {previewServices.map((service) => {
             const Icon = iconMap[service.icon] || Sparkles
-            return (
-              <motion.div
-                key={service.id}
-                variants={itemVariants}
-                className="group"
-              >
-                <div className="card-luxury overflow-hidden h-full">
-                  {/* Image */}
-                  <div className="relative h-56 overflow-hidden">
-                    <Image
-                      src={service.image}
-                      alt={service.title}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </div>
+            const isWeddingEvent = service.id === 'wedding-events'
+            const isOpeningCeremony = service.id === 'opening-ceremony'
+            const isGraduation = service.id === 'graduation-ceremonies'
+            const isBirthday = service.id === 'birthday-events'
 
-                  {/* Content */}
-                  <div className="p-6">
+            const CardContent = () => (
+              <>
+                {/* Image */}
+                <div className="relative h-40 sm:h-48 overflow-hidden flex-shrink-0">
+                  <Image
+                    src={service.image}
+                    alt={service.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+
+                {/* Content */}
+                <div className="p-6 flex flex-col flex-1">
+                  <div className="flex-1">
                     <div className="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center mb-4 group-hover:bg-gold/20 transition-colors duration-300">
                       <Icon className="w-6 h-6 text-gold" />
                     </div>
@@ -124,7 +127,45 @@ export function ServicesPreview() {
                       {service.description}
                     </p>
                   </div>
+                  {(isWeddingEvent || isOpeningCeremony || isGraduation || isBirthday) && (
+                    <div className="mt-auto pt-4">
+                      <span className="text-gold font-body text-sm font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-300">
+                        View Packages
+                        <span>→</span>
+                      </span>
+                    </div>
+                  )}
                 </div>
+              </>
+            )
+
+            return (
+              <motion.div
+                key={service.id}
+                variants={itemVariants}
+                className="group bg-white rounded-2xl overflow-hidden h-full flex flex-col transition-shadow duration-400 hover:shadow-card-hover"
+              >
+                {isWeddingEvent ? (
+                  <Link href="/wedding" className="flex flex-col h-full">
+                    <CardContent />
+                  </Link>
+                ) : isOpeningCeremony ? (
+                  <Link href="/opening" className="flex flex-col h-full">
+                    <CardContent />
+                  </Link>
+                ) : isGraduation ? (
+                  <Link href="/graduation" className="flex flex-col h-full">
+                    <CardContent />
+                  </Link>
+                ) : isBirthday ? (
+                  <Link href="/birthday" className="flex flex-col h-full">
+                    <CardContent />
+                  </Link>
+                ) : (
+                  <div className="flex flex-col h-full">
+                    <CardContent />
+                  </div>
+                )}
               </motion.div>
             )
           })}

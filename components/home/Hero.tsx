@@ -11,7 +11,7 @@ export function Hero() {
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('https://afrikhotel.so/wp-content/uploads/2015/07/somali-wedding-1024x684.jpg')`,
+          backgroundImage: `url('/images/g2.png')`,
         }}
       >
         {/* Gradient Overlay */}

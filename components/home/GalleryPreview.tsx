@@ -31,12 +31,13 @@ const itemVariants = {
 }
 
 const galleryItems = [
-  { src: 'https://images.pexels.com/photos/13895241/pexels-photo-13895241.jpeg?w=800&h=600&fit=crop', alt: 'Romantic Couple Portrait', category: 'Photography' },
-  { src: 'https://images.pexels.com/photos/3013841/pexels-photo-3013841.jpeg?w=800&h=600&fit=crop', alt: 'Outdoor Wedding Couple', category: 'Photography' },
-  { src: 'https://images.pexels.com/photos/1024960/pexels-photo-1024960.jpeg?w=800&h=600&fit=crop', alt: 'Luxury Gold Decoration', category: 'Decoration' },
-  { src: 'https://images.pexels.com/photos/3665416/pexels-photo-3665416.jpeg?w=800&h=600&fit=crop', alt: 'Bride Getting Ready', category: 'Photography' },
-  { src: 'https://images.pexels.com/photos/11376646/pexels-photo-11376646.jpeg?w=800&h=600&fit=crop', alt: 'Wedding Cake Gold Theme', category: 'Cakes' },
-  { src: 'https://images.pexels.com/photos/2614818/pexels-photo-2614818.jpeg?w=800&h=600&fit=crop', alt: 'Elegant Hall Setup', category: 'Halls' },
+  { src: '/images/birthday.png', alt: 'Birthday Celebration', category: 'Birthday' },
+  { src: '/images/GraduationCeremony.png', alt: 'Graduation Ceremony', category: 'Graduation' },
+  { src: '/images/GrandOpening.png', alt: 'Grand Opening', category: 'Opening' },
+  { src: '/images/g4.png', alt: 'Wedding Event', category: 'Wedding' },
+  { src: '/images/EventDecoration.png', alt: 'Event Decoration', category: 'Events' },
+  { src: '/images/CelebrationMoments.png', alt: 'Celebration Moments', category: 'Events' },
+  { src: '/images/MemorableMoments.png', alt: 'Memorable Moments', category: 'Events' },
 ]
 
 export function GalleryPreview() {
@@ -95,10 +96,7 @@ export function GalleryPreview() {
             <motion.div
               key={index}
               variants={itemVariants}
-              className={cn(
-                'relative overflow-hidden rounded-xl group cursor-pointer',
-                index === 0 || index === 3 ? 'md:row-span-2 md:aspect-[3/4]' : 'aspect-[4/5]'
-              )}
+              className="relative overflow-hidden rounded-xl group cursor-pointer aspect-[4/3]"
               onClick={() => openLightbox(index)}
             >
               <Image

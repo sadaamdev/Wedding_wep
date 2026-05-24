@@ -40,11 +40,25 @@ export default function ContactPage() {
     resolver: zodResolver(contactSchema),
   })
 
-  const onSubmit = (data: ContactFormData) => {
-    console.log('Contact form submitted:', data)
-    setIsSubmitted(true)
-    reset()
-    setTimeout(() => setIsSubmitted(false), 5000)
+  const onSubmit = async (data: ContactFormData) => {
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to send message')
+      }
+
+      setIsSubmitted(true)
+      reset()
+      setTimeout(() => setIsSubmitted(false), 5000)
+    } catch (error) {
+      console.error('Contact form error:', error)
+      alert('Failed to send message. Please try again or contact us directly.')
+    }
   }
 
   return (

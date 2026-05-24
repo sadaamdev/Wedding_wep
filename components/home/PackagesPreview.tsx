@@ -66,97 +66,112 @@ export function PackagesPreview() {
               key={pkg.id}
               variants={itemVariants}
               className={cn(
-                'relative rounded-2xl p-8 transition-all duration-400',
+                'relative rounded-2xl transition-all duration-400 overflow-hidden h-full flex flex-col',
                 pkg.featured
-                  ? 'bg-primary text-white shadow-luxury scale-105 md:scale-110 z-10'
+                  ? 'bg-primary text-white shadow-luxury ring-2 ring-gold z-10'
                   : 'bg-white shadow-card hover:shadow-card-hover'
               )}
             >
               {/* Popular Badge */}
               {pkg.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
                   <span className="bg-gold text-primary font-body text-xs font-semibold px-4 py-1.5 rounded-full uppercase tracking-wide">
                     Most Popular
                   </span>
                 </div>
               )}
 
-              {/* Package Name */}
-              <div className="text-center mb-6">
-                <h3
-                  className={cn(
-                    'font-serif text-h3 font-semibold mb-2',
-                    pkg.featured ? 'text-white' : 'text-primary'
-                  )}
-                >
-                  {pkg.name}
-                </h3>
-                <p
-                  className={cn(
-                    'font-body text-sm',
-                    pkg.featured ? 'text-white/70' : 'text-muted'
-                  )}
-                >
-                  {pkg.description}
-                </p>
-              </div>
-
-              {/* Price */}
-              <div className="text-center mb-8">
-                <span
-                  className={cn(
-                    'font-serif text-4xl font-semibold',
-                    pkg.featured ? 'text-gold' : 'text-primary'
-                  )}
-                >
-                  {formatPrice(pkg.price)}
-                </span>
-              </div>
-
-              {/* Features */}
-              <ul className="space-y-3 mb-8">
-                {pkg.features.slice(0, 5).map((feature, index) => (
-                  <li
-                    key={index}
+              <div className="p-8 flex flex-col flex-1 h-full">
+                {/* Top: Package Name */}
+                <div className="text-center mb-5">
+                  <h3
                     className={cn(
-                      'flex items-start gap-3 font-body text-sm',
-                      pkg.featured ? 'text-white/80' : 'text-muted'
+                      'font-serif text-h3 font-semibold mb-2',
+                      pkg.featured ? 'text-white' : 'text-primary'
                     )}
                   >
-                    <Check
-                      size={18}
-                      className={cn(
-                        'flex-shrink-0 mt-0.5',
-                        pkg.featured ? 'text-gold' : 'text-gold'
-                      )}
-                    />
-                    {feature}
-                  </li>
-                ))}
-                {pkg.features.length > 5 && (
-                  <li
+                    {pkg.name}
+                  </h3>
+                  <p
                     className={cn(
                       'font-body text-sm',
-                      pkg.featured ? 'text-white/60' : 'text-muted-foreground/60'
+                      pkg.featured ? 'text-white/70' : 'text-muted'
                     )}
                   >
-                    +{pkg.features.length - 5} more features
-                  </li>
-                )}
-              </ul>
+                    {pkg.description}
+                  </p>
+                </div>
 
-              {/* CTA */}
-              <Link
-                href="/booking"
-                className={cn(
-                  'block w-full text-center py-4 rounded-full font-body font-medium transition-all duration-300',
-                  pkg.featured
-                    ? 'bg-gold text-primary hover:bg-gold-light'
-                    : 'bg-primary text-white hover:bg-primary-600'
-                )}
-              >
-                Choose Package
-              </Link>
+                {/* Price */}
+                <div className="text-center mb-6">
+                  {pkg.price > 0 ? (
+                    <span
+                      className={cn(
+                        'font-serif text-4xl font-semibold',
+                        pkg.featured ? 'text-gold' : 'text-primary'
+                      )}
+                    >
+                      {formatPrice(pkg.price)}
+                    </span>
+                  ) : pkg.tagline && (
+                    <span
+                      className={cn(
+                        'font-body text-lg font-medium italic',
+                        pkg.featured ? 'text-white/90' : 'text-primary'
+                      )}
+                    >
+                      {pkg.tagline}
+                    </span>
+                  )}
+                </div>
+
+                {/* Middle: Features */}
+                <ul className="space-y-2.5 flex-1">
+                  {pkg.features.slice(0, 5).map((feature, index) => (
+                    <li
+                      key={index}
+                      className={cn(
+                        'flex items-start gap-3 font-body text-sm',
+                        pkg.featured ? 'text-white/80' : 'text-muted'
+                      )}
+                    >
+                      <Check
+                        size={18}
+                        className={cn(
+                          'flex-shrink-0 mt-0.5',
+                          pkg.featured ? 'text-gold' : 'text-gold'
+                        )}
+                      />
+                      {feature}
+                    </li>
+                  ))}
+                  {pkg.features.length > 5 && (
+                    <li
+                      className={cn(
+                        'font-body text-sm',
+                        pkg.featured ? 'text-white/60' : 'text-muted-foreground/60'
+                      )}
+                    >
+                      +{pkg.features.length - 5} more features
+                    </li>
+                  )}
+                </ul>
+
+                {/* Bottom: CTA */}
+                <div className="mt-6">
+                  <Link
+                    href="/booking"
+                    className={cn(
+                      'block w-full text-center py-4 rounded-full font-body font-medium transition-all duration-300',
+                      pkg.featured
+                        ? 'bg-gold text-primary hover:bg-gold-light'
+                        : 'bg-primary text-white hover:bg-primary-600'
+                    )}
+                  >
+                    Choose Package
+                  </Link>
+                </div>
+              </div>
             </motion.div>
           ))}
         </motion.div>

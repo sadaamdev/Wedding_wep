@@ -16,6 +16,7 @@ import {
   ClipboardCheck,
   Frame,
   Heart,
+  GraduationCap,
   ArrowRight,
 } from 'lucide-react'
 import { services } from '@/lib/data'
@@ -33,6 +34,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   ClipboardCheck,
   Frame,
   Heart,
+  GraduationCap,
 }
 
 const containerVariants = {
@@ -100,7 +102,7 @@ export default function ServicesPage() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: '-100px' }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch"
           >
             {services.map((service) => {
               const Icon = iconMap[service.icon] || Sparkles
@@ -108,33 +110,43 @@ export default function ServicesPage() {
                 <motion.div
                   key={service.id}
                   variants={itemVariants}
-                  className="group"
+                  className="group h-full"
                 >
-                  <div className="card-luxury overflow-hidden h-full">
-                    {/* Image */}
-                    <div className="relative h-64 overflow-hidden">
-                      <Image
-                        src={service.image}
-                        alt={service.title}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-8">
-                      <div className="w-14 h-14 rounded-full bg-gold/10 flex items-center justify-center mb-5 group-hover:bg-gold/20 transition-colors duration-300">
-                        <Icon className="w-7 h-7 text-gold" />
+                  <Link href={service.href} className="block h-full">
+                    <div className="card-luxury overflow-hidden h-full flex flex-col">
+                      {/* Image */}
+                      <div className="relative h-64 overflow-hidden flex-shrink-0">
+                        <Image
+                          src={service.image}
+                          alt={service.title}
+                          fill
+                          className="object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       </div>
-                      <h3 className="font-serif text-h4 text-primary mb-3">
-                        {service.title}
-                      </h3>
-                      <p className="font-body text-muted leading-relaxed">
-                        {service.description}
-                      </p>
+
+                      {/* Content */}
+                      <div className="p-8 flex flex-col flex-1">
+                        <div className="flex-1">
+                          <div className="w-14 h-14 rounded-full bg-gold/10 flex items-center justify-center mb-4 group-hover:bg-gold/20 transition-colors duration-300">
+                            <Icon className="w-7 h-7 text-gold" />
+                          </div>
+                          <h3 className="font-serif text-h4 text-primary mb-2">
+                            {service.title}
+                          </h3>
+                          <p className="font-body text-muted leading-relaxed">
+                            {service.description}
+                          </p>
+                        </div>
+                        <div className="mt-auto pt-6">
+                          <span className="inline-flex items-center gap-2 text-gold font-body font-semibold text-sm uppercase tracking-wide group-hover:gap-3 transition-all duration-300">
+                            Learn More
+                            <ArrowRight className="w-4 h-4" />
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </motion.div>
               )
             })}

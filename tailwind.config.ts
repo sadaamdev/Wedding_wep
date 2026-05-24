@@ -88,8 +88,8 @@ const config: Config = {
       boxShadow: {
         'luxury': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
         'elegant': '0 10px 40px -10px rgba(0, 0, 0, 0.15)',
-        'card': '0 4px 20px rgba(0, 0, 0, 0.08)',
-        'card-hover': '0 20px 40px rgba(0, 0, 0, 0.15)',
+        'card': '0 2px 12px rgba(0, 0, 0, 0.05)',
+        'card-hover': '0 8px 30px rgba(0, 0, 0, 0.08)',
         'glow-gold': '0 0 40px rgba(201, 162, 39, 0.3)',
         'glow-rose': '0 0 40px rgba(212, 165, 165, 0.3)',
       },
