@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowRight, Sparkles, Star, Building2 } from 'lucide-react'
 import { openingPackages } from '@/lib/data'
 import { formatPrice, cn } from '@/lib/utils'
@@ -79,7 +80,7 @@ export default function OpeningPage() {
                 className={cn(
                   'group relative rounded-2xl transition-all duration-400 overflow-hidden h-full flex flex-col',
                   pkg.featured
-                    ? 'bg-primary text-white shadow-luxury scale-105 ring-2 ring-gold/50'
+                    ? 'bg-primary text-white shadow-luxury ring-2 ring-gold/50'
                     : pkg.popular
                     ? 'bg-white shadow-card hover:shadow-card-hover'
                     : 'bg-white shadow-card hover:shadow-card-hover'
@@ -102,6 +103,17 @@ export default function OpeningPage() {
                     </span>
                   </div>
                 )}
+
+                {/* Image */}
+                <div className="relative h-48 overflow-hidden flex-shrink-0">
+                  <Image
+                    src="/images/GrandOpening.png"
+                    alt={pkg.name}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
 
                 {/* Card Content */}
                 <div className="p-8 flex flex-col flex-1 h-full">
