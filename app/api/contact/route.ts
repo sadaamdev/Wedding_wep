@@ -2,8 +2,6 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { sendContactEmail } from '@/lib/email'
 
-export const runtime = 'edge'
-
 const contactSchema = z.object({
   name: z.string().min(2, 'Name is required'),
   email: z.string().email('Invalid email address'),
